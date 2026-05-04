@@ -103,7 +103,9 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
     else:
         msg = "Bot running. Waiting first sniper signal..."
-    await update.message.reply_text(msg)async def signal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(msg)
+
+async def lastsignal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global last_signal
     if not last_signal:
         await update.message.reply_text("No broadcast signal yet.")
