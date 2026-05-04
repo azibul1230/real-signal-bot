@@ -202,7 +202,9 @@ async def scan_and_broadcast(app):
             except:
                 pass
 
-        asyncio.create_task(evaluate_last_signal())async def scheduler(app):
+        async def loop_runner(app):
+    asyncio.create_task(evaluate_last_signal())
+
     while True:
         now = datetime.utcnow()
         sec = now.second
@@ -210,17 +212,18 @@ async def scan_and_broadcast(app):
         await asyncio.sleep(wait)
         await scan_and_broadcast(app)
 
+
 def main():
     app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("live", live))
     app.add_handler(CommandHandler("status", status))
-    app.add_handler(CommandHandler("signal", signal))
+    app.add_handler(CommandHandler("signal", lastsignal))
     app.add_handler(CommandHandler("debug", debug))
 
     async def post_init(application):
-        asyncio.create_task(scheduler(application))
+        asyncio.create_task(loop_runner(application))
 
     app.post_init = post_init
 
